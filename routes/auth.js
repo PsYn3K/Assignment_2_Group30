@@ -11,6 +11,20 @@ router.get("/register", (req, res) => {
   res.render("register", { error: null });
 });
 
+router.get("/dashboard", (req, res) => {
+  if (!req.session.user) {
+    return res.redirect("/login");
+  }
+
+  res.render("dashboard", { user: req.session.user });
+});
+
+router.get("/logout", (req, res) => {
+  req.session.destroy(() => {
+    res.redirect("/login");
+  });
+});
+
 router.post("/register", async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -64,7 +78,7 @@ router.post("/login", async (req, res) => {
       email: foundUser.email
     };
 
-    res.send("Login successful.");
+    res.redirect("/dashboard");
   } catch (error) {
     console.log(error);
     res.render("login", { error: "Login failed." });
