@@ -47,7 +47,7 @@ router.post("/register", async (req, res) => {
     });
 
     await newUser.save();
-    res.send("User registered successfully.");
+    res.redirect("/login");
   } catch (error) {
     console.log(error);
     res.render("register", { error: "Registration failed." });
