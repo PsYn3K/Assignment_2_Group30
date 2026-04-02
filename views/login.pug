@@ -4,6 +4,9 @@ html
     title Login
   body
     h1 Login Page
+
+    if error 
+      p= error
     form(action="/login" method="POST")
       label Email:
       input(type="text" name="email")

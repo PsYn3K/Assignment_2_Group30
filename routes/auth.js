@@ -1,29 +1,27 @@
 const express = require("express");
-const bcrypt = require("bcryptjs"); 
+const bcrypt = require("bcryptjs");
 const router = express.Router();
 const User = require("../models/User");
 
-// GET routes
 router.get("/login", (req, res) => {
-  res.render("login");
+  res.render("login", { error: null });
 });
 
 router.get("/register", (req, res) => {
-  res.render("register");
+  res.render("register", { error: null });
 });
 
-// POST register
 router.post("/register", async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
     if (!username || !email || !password) {
-      return res.send("All fields are required.");
+      return res.render("register", { error: "All fields are required." });
     }
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.send("Email already exists.");
+      return res.render("register", { error: "Email already exists." });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -38,23 +36,26 @@ router.post("/register", async (req, res) => {
     res.send("User registered successfully.");
   } catch (error) {
     console.log(error);
-    res.send("Registration failed.");
+    res.render("register", { error: "Registration failed." });
   }
 });
 
-// POST login
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    if (!email || !password) {
+      return res.render("login", { error: "All fields are required." });
+    }
+
     const foundUser = await User.findOne({ email });
     if (!foundUser) {
-      return res.send("Invalid email or password.");
+      return res.render("login", { error: "Invalid email or password." });
     }
 
     const isMatch = await bcrypt.compare(password, foundUser.password);
     if (!isMatch) {
-      return res.send("Invalid email or password.");
+      return res.render("login", { error: "Invalid email or password." });
     }
 
     req.session.user = {
@@ -66,7 +67,7 @@ router.post("/login", async (req, res) => {
     res.send("Login successful.");
   } catch (error) {
     console.log(error);
-    res.send("Login failed.");
+    res.render("login", { error: "Login failed." });
   }
 });
 

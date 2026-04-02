@@ -4,6 +4,10 @@ html
     title Register
   body
     h1 Register Page
+
+    if error 
+      p= error 
+      
     form(action="/register" method="POST")
       label Username:
       input(type="text" name="username")
