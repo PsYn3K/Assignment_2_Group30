@@ -1,0 +1,17 @@
+doctype html
+html
+  head
+    title Register
+  body
+    h1 Register Page
+    form(action="/register" method="POST")
+      label Username:
+      input(type="text" name="username")
+      br
+      label Email:
+      input(type="text" name="email")
+      br
+      label Password:
+      input(type="password" name="password")
+      br
+      button(type="submit") Register
