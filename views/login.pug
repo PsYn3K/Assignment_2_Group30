@@ -2,16 +2,22 @@ doctype html
 html
   head
     title Login
+    script(src="/js/loginValidation.js" defer)
   body
     h1 Login Page
 
-    if error 
+    if error
       p= error
-    form(action="/login" method="POST")
-      label Email:
-      input(type="text" name="email")
+
+    div#formErrors
+
+    form#loginForm(action="/login" method="POST")
+      label(for="email") Email:
+      input(type="text" name="email" id="email")
       br
-      label Password:
-      input(type="password" name="password")
+
+      label(for="password") Password:
+      input(type="password" name="password" id="password")
       br
+
       button(type="submit") Login
