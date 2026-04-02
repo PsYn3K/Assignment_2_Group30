@@ -1,0 +1,29 @@
+{
+  "name": "assignment_2_group30",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PsYn3K/Assignment_2_Group30.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/PsYn3K/Assignment_2_Group30/issues"
+  },
+  "homepage": "https://github.com/PsYn3K/Assignment_2_Group30#readme",
+  "dependencies": {
+    "dotenv": "^17.4.0",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "mongoose": "^9.3.3",
+    "pug": "^3.0.4"
+  }
+}
