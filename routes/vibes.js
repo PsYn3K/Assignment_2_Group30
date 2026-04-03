@@ -3,7 +3,7 @@ const router = express.Router();
 const Vibe = require("../models/Vibe");
 
 router.get("/select-vibes", (req, res) => {
-    if (!req.session.userId) return res.redirect("/login");
+    if (!req.session.user.id) return res.redirect("/login");
     res.render("select-vibes");
 });
 
@@ -23,7 +23,7 @@ router.post("/create-vibe", async (req, res) => {
 
         // Check for duplicate vibe
         const exists = await Vibe.findOne({
-            userId: req.session.userId,
+            userId: req.session.user.id,
             vibeKey: { $all: normalized, $size: 3 }
         });
         if (exists) {
