@@ -17,11 +17,17 @@ router.get("/dashboard", async (req, res) => {
     return res.redirect("/login");
   }
 
-  const tasks = await Task.find({ userId: req.session.user.id });
+  const search = req.query.search || "";
+
+  const tasks = await Task.find({
+    userId: req.session.user.id,
+    title: { $regex: search, $options: "i" }
+  });
 
   res.render("dashboard", {
     user: req.session.user,
-    tasks
+    tasks,
+    search
   });
 });
 

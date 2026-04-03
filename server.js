@@ -33,7 +33,7 @@ app.use("/", authRoutes);
 
 // Home
 app.get("/", (req, res) => {
-  res.send("Group 30 TEST SERVER");
+  res.render("index");
 });
 
 app.listen(3000, () => {
