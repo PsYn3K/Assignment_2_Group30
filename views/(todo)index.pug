@@ -1,17 +1,7 @@
 extends layout
 
-block content
+
   h1 Please Sign in for full access to the Item Repository
+  block content
   
-  form(action="/login", method="post")
-    
-    div
-      label(for="username") Username:
-      input(type="text", name="username", id="username", required autofocus placeholder="Enter your username")
-    div
-      label(for="password") Password:
-      input(type="password", name="password", id="password", required placeholder="Enter your password")
-    button(type="submit") Sign In
-    p Don't have an account?
-        a(href="/register") Register here
-    
+ 
