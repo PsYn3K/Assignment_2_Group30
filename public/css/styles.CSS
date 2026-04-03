@@ -4,7 +4,8 @@ body {
   margin: 30px;
 }
 
-h1, h2 {
+h1,
+h2 {
   color: #222;
 }
 
@@ -12,7 +13,8 @@ form {
   margin-bottom: 20px;
 }
 
-input, button {
+input,
+button {
   padding: 8px;
   margin-top: 5px;
   margin-bottom: 10px;
@@ -37,4 +39,42 @@ li {
 #formErrors {
   color: red;
   margin-bottom: 10px;
+}
+
+#mainHeader {
+  position: fixed;
+  width:100%;
+  height:12%;
+  display: grid;
+  top: 0;
+  left: 0;
+  background-color: saddlebrown;
+  color: seashell;
+  padding: 10px;
+  text-align: center;
+  text-decoration: bold;
+  border: groove 8px brown;
+
+}
+
+#mainHeader nav {
+  justify-self: end;
+  align-self: end;
+  padding-right: 20px;
+}
+
+#mainFooter {
+  position: fixed;
+  width:100%;
+  height:12%;
+  display: grid;
+  bottom: 0;
+  left: 0;
+  background-color: saddlebrown;
+  color: seashell;
+  padding: 10px;
+  text-align: center;
+  text-decoration: bold;
+  border: groove 8px brown;
+  position
 }
