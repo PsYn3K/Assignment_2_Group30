@@ -6,23 +6,23 @@ block content
 
   a(href="/logout") Logout
 
-  h2 Add Task
-  form(action="/add-task" method="POST")
-    input(type="text" name="title" placeholder="Enter task")
+  h2 Add Vibe
+  form(action="/add-vibe" method="POST")
+    input(type="text" name="vibeName" placeholder="Enter vibe name")
     button(type="submit") Add
 
-  h2 Search Tasks
+  h2 Search Vibes
   form(action="/dashboard" method="GET")
-    input(type="text" name="search" placeholder="Search tasks" value=search)
+    input(type="text" name="search" placeholder="Search vibes" value=search)
     button(type="submit") Search
 
-  h2 Your Tasks
-  if tasks.length === 0
-    p No tasks found.
+  h2 Your Vibes
+  if Vibe.length === 0
+    p No vibes found.
   ul
-    each task in tasks
+    each vibe in Vibe
       li
-        | #{task.title}
-        a(href=`/edit-task/${task._id}` style="margin-left:10px;") Edit
-        form(action=`/delete-task/${task._id}` method="POST" style="display:inline; margin-left:10px;")
+        | #{vibe.vibeName}
+        a(href=`/edit-vibe/${vibe._id}` style="margin-left:10px;") Edit
+        form(action=`/delete-vibe/${vibe._id}` method="POST" style="display:inline; margin-left:10px;")
           button(type="submit") Delete

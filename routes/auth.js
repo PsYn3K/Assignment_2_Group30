@@ -2,7 +2,7 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const router = express.Router();
 const User = require("../models/User");
-const Task = require("../models/Task");
+const Vibe = require("../models/Vibe");
 
 router.get("/login", (req, res) => {
   res.render("login", { error: null });
@@ -19,14 +19,14 @@ router.get("/dashboard", async (req, res) => {
 
   const search = req.query.search || "";
 
-  const tasks = await Task.find({
+  const vibeList = await Vibe.find({
     userId: req.session.user.id,
-    title: { $regex: search, $options: "i" }
+    vibeName: { $regex: search, $options: "i" }
   });
 
   res.render("dashboard", {
     user: req.session.user,
-    tasks,
+    vibeList,
     search
   });
 });
@@ -97,27 +97,27 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.post("/add-task", async (req, res) => {
+router.post("/add-vibe", async (req, res) => {
   if (!req.session.user) {
     return res.redirect("/login");
   }
 
-  const newTask = new Task({
-    title: req.body.title,
+  const newVibe = new Vibe({
+    vibeName: req.body.vibeName,
     userId: req.session.user.id
   });
 
-  await newTask.save();
+  await newVibe.save();
 
   res.redirect("/dashboard");
 });
 
-router.post("/delete-task/:id", async (req, res) => {
+router.post("/delete-vibe/:id", async (req, res) => {
   if (!req.session.user) {
     return res.redirect("/login");
   }
 
-  await Task.deleteOne({
+  await Vibe.deleteOne({
     _id: req.params.id,
     userId: req.session.user.id
   });
@@ -126,35 +126,35 @@ router.post("/delete-task/:id", async (req, res) => {
 });
 
 
-router.get("/edit-task/:id", async (req, res) => {
+router.get("/edit-vibe/:id", async (req, res) => {
   if (!req.session.user) {
     return res.redirect("/login");
   }
 
-  const task = await Task.findOne({
+  const vibe = await Vibe.findOne({
     _id: req.params.id,
     userId: req.session.user.id
   });
 
-  if (!task) {
+  if (!vibe) {
     return res.redirect("/dashboard");
   }
 
-  res.render("edit-task", { task });
+  res.render("edit-vibe", { vibe });
 });
 
-router.post("/edit-task/:id", async (req, res) => {
+router.post("/edit-vibe/:id", async (req, res) => {
   if (!req.session.user) {
     return res.redirect("/login");
   }
 
-  await Task.updateOne(
+  await Vibe.updateOne(
     {
       _id: req.params.id,
       userId: req.session.user.id
     },
     {
-      title: req.body.title
+      vibeName: req.body.vibeName
     }
   );
 

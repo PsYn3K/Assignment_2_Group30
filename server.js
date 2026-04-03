@@ -6,6 +6,7 @@ const session = require("express-session");
 const path = require("path");
 
 const authRoutes = require("./routes/auth");
+const vibeRoutes = require("./routes/vibes");
 
 const app = express();
 
@@ -17,6 +18,7 @@ mongoose.connect("mongodb://127.0.0.1:27017/taskmanager")
 // Middleware
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
+
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -30,16 +32,13 @@ app.use(session({
 
 // Routes
 app.use("/", authRoutes);
+app.use("/", vibeRoutes);
 
 // Home
 app.get("/", (req, res) => {
   res.render("index");
 });
 
-// Choose vibes
-app.get("/select-vibes", (req, res) => {
-  res.render("select-vibes");
-});
 
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");

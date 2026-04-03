@@ -3,13 +3,33 @@ extends layout
 block content
   h1 Select Vibes
 
-  form(action="/select-vibes" method="POST")
+  form#selectVibe(action="/select-vibes" method="POST")
     label(for="vibe") Choose a Vibe:
     select(name="vibe" id="vibe")
       option(value="chill") Chill
       option(value="energetic") Energetic
       option(value="productive") Productive
     button(type="submit") Submit
+
+  form#createVibe(action="/create-vibe" method="POST")
+    h2 Create a New Vibe
+    label(for="vibeName") Vibe Name:
+    input(type="text" name="vibeName" id="vibeName" required)
+    label(for="vibeKey") Vibe Keywords (comma separated):
+    input(type="text" name="vibeKey" id="vibeKey" required)
+    button(type="submit") Create
+
+    br
+    p Pick 3 colors, then name your vibe in the popup. It will auto-save.
+
+  div#colorButtons
+    button.color-btn(type="button" data-color="red" style="background:red;") Red
+    button.color-btn(type="button" data-color="blue" style="background:blue;") Blue
+    button.color-btn(type="button" data-color="green" style="background:green;") Green
+    button.color-btn(type="button" data-color="yellow" style="background:yellow;") Yellow
+    button.color-btn(type="button" data-color="purple" style="background:purple;") Purple
+
+  p#message
 
   br
   a(href="/dashboard") Back to Dashboard
