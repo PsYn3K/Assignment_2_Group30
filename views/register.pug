@@ -1,29 +1,25 @@
-doctype html
-html
-  head
-    title Register
-    link(rel="stylesheet" href="/styles.css")
+extends layout
 
-    script(src="/js/registerValidation.js" defer)
-  body
-    h1 Register Page
+block content 
 
-    if error
-      p= error
+  h1 Register Page
 
-    div#formErrors
+  if error
+    p= error
 
-    form#registerForm(action="/register" method="POST")
-      label(for="username") Username:
-      input(type="text" name="username" id="username")
-      br
+  div#formErrors
 
-      label(for="email") Email:
-      input(type="text" name="email" id="email")
-      br
+  form#registerForm(action="/register" method="POST")
+    label(for="username") Username:
+    input(type="text" name="username" id="username")
+    br
 
-      label(for="password") Password:
-      input(type="password" name="password" id="password")
-      br
+    label(for="email") Email:
+    input(type="text" name="email" id="email")
+    br
 
-      button(type="submit") Register
+    label(for="password") Password:
+    input(type="password" name="password" id="password")
+    br
+
+    button(type="submit") Register

@@ -1,30 +1,28 @@
-doctype html
-html
-  head
-    title Dashboard
-    link(rel="stylesheet" href="/styles.css")
-  body
-    h1 Welcome #{user.username}
+extends layout  
 
-    a(href="/logout") Logout
+block content 
 
-    h2 Add Task
-    form(action="/add-task" method="POST")
-      input(type="text" name="title" placeholder="Enter task")
-      button(type="submit") Add
+  h1 Welcome #{user.username}
 
-    h2 Search Tasks
-    form(action="/dashboard" method="GET")
-      input(type="text" name="search" placeholder="Search tasks" value=search)
-      button(type="submit") Search
+  a(href="/logout") Logout
 
-    h2 Your Tasks
-    if tasks.length === 0
-      p No tasks found.
-    ul
-      each task in tasks
-        li
-          | #{task.title}
-          a(href=`/edit-task/${task._id}` style="margin-left:10px;") Edit
-          form(action=`/delete-task/${task._id}` method="POST" style="display:inline; margin-left:10px;")
-            button(type="submit") Delete
+  h2 Add Task
+  form(action="/add-task" method="POST")
+    input(type="text" name="title" placeholder="Enter task")
+    button(type="submit") Add
+
+  h2 Search Tasks
+  form(action="/dashboard" method="GET")
+    input(type="text" name="search" placeholder="Search tasks" value=search)
+    button(type="submit") Search
+
+  h2 Your Tasks
+  if tasks.length === 0
+    p No tasks found.
+  ul
+    each task in tasks
+      li
+        | #{task.title}
+        a(href=`/edit-task/${task._id}` style="margin-left:10px;") Edit
+        form(action=`/delete-task/${task._id}` method="POST" style="display:inline; margin-left:10px;")
+          button(type="submit") Delete
