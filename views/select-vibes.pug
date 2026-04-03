@@ -12,12 +12,13 @@ block content
           option(value=vibe._id)= vibe.vibeName
       else
         option(value="" disabled) No vibes found
-    button(type="submit") Apply
+    button(type="submit") Apply Now
+    button(type="submit" formaction="/save-default-style") Save As Default vibe
 
   form#createVibe(action="/create-vibe" method="POST")
 
     h2 Create a New Vibe
-    p Manually input vibe name and colors for the vibe selector below. It will auto-save.
+    p Manually input vibe name and colors for the vibe selector below. Click create to save it.
 
     label(for="vibeName") Vibe Name:
     input(type="text" name="vibeName" id="vibeName" required)

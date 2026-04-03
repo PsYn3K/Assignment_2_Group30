@@ -84,10 +84,23 @@ router.post("/login", async (req, res) => {
       return res.render("login", { error: "Invalid email or password." });
     }
 
+    // Look up the saved default vibe to get its vibeKey colors
+    const defaultStyle = await Vibe.findOne({
+      vibeName: foundUser.defaultStyle,
+      $or: [{ userId: null }, { userId: foundUser._id }]
+    });
+
     req.session.user = {
       id: foundUser._id,
       username: foundUser.username,
-      email: foundUser.email
+      email: foundUser.email,
+      defaultStyle: foundUser.defaultStyle || "root"
+    };
+
+    // Set active style from saved vibe's colors, fallback to empty if not found
+    req.session.activeStyle = {
+      vibeName: foundUser.defaultStyle || "root",
+      vibeKey: defaultStyle ? defaultStyle.vibeKey : []
     };
 
     res.redirect("/dashboard");

@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Vibe = require("../models/Vibe");
+const User = require("../models/User");
 
 router.get("/select-vibes", async (req, res) => {
   if (!req.session.user) return res.redirect("/login");
@@ -9,7 +10,9 @@ router.get("/select-vibes", async (req, res) => {
   const userVibes = await Vibe.find({ userId: req.session.user.id });
   const vibeList = [...defaultVibes, ...userVibes];
 
-  res.render("select-vibes", { vibeList }); 
+  res.render("select-vibes", {
+    vibeList, currentStyle: req.session.activeStyle || "root"
+  });
 });
 
 router.post("/create-vibe", async (req, res) => {
@@ -39,7 +42,7 @@ router.post("/create-vibe", async (req, res) => {
         const newVibe = await Vibe.create({
             vibeName: vibeName.trim(),
             vibeKey: normalized,
-            userId: req.session.userId
+            userId: req.session.user.id
         });
 
         res.status(201).json(newVibe);
@@ -47,6 +50,55 @@ router.post("/create-vibe", async (req, res) => {
         console.error(err);
         res.status(500).json({ error: "Server error" });
     }
+});
+
+// Apply current vibe style to current session
+router.post("/apply-vibe", async (req, res) => {
+  if (!req.session.user) return res.redirect("/login");
+
+  const vibe = await Vibe.findOne({
+    _id: req.body.vibeId,
+    $or: [{ userId: null }, { userId: req.session.user.id }]
+  });
+
+  if (!vibe) return res.redirect("/select-vibes");
+
+  // Store vibeKey colors in session for CSS variable manipulation
+  req.session.activeStyle = {
+    vibeName: vibe.vibeName,
+    vibeKey: vibe.vibeKey 
+  };
+
+  res.redirect("/select-vibes");
+});
+
+router.post("/save-default-style", async (req, res) => {
+  if (!req.session.user) return res.redirect("/login");
+
+  const vibe = await Vibe.findOne({
+    _id: req.body.vibeId,
+    $or: [{ userId: null }, { userId: req.session.user.id }]
+  });
+
+  if (!vibe) return res.redirect("/select-vibes");
+
+  // Save vibeKey to user defaultStyle in DB
+  await User.updateOne(
+    { _id: req.session.user.id },
+    {
+      defaultStyle: vibe.vibeName,
+      defaultVibeKey: vibe.vibeKey  // add this field to User schema
+    }
+  );
+
+  req.session.activeStyle = {
+    vibeName: vibe.vibeName,
+    vibeKey: vibe.vibeKey
+  };
+
+  req.session.user.defaultStyle = vibe.vibeName;
+
+  res.redirect("/select-vibes");
 });
 
 module.exports = router;

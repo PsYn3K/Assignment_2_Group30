@@ -1,12 +1,25 @@
+/*default styles for the app, using CSS variables for theming
+use these variables in optional styles, hard code things you dont want to change with style*/
+:root {
+  --bg-color: sandybrown;
+  --color: #222;
+  --accent-color: #007bff;
+  --card-bg: #fff;
+  --border-color: brown;
+  --header-bg: saddlebrown;
+  --font: Arial, sans-serif;
+}
+
+
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+  font-family: var(--font);
+  background-color: var(--bg-color);
   margin: 30px;
 }
 
 h1,
 h2 {
-  color: #222;
+  color: var(--text-color);
 }
 
 form {
@@ -48,18 +61,19 @@ li {
   display: grid;
   top: 0;
   left: 0;
-  background-color: saddlebrown;
-  color: seashell;
+  background-color: var(--header-bg);
+  color: var(--text-color);
   padding: 10px;
   text-align: center;
   text-decoration: bold;
-  border: groove 8px brown;
+  border: groove 8px var(--border-color);
 
 }
 
 #mainHeader nav {
   justify-self: end;
   align-self: end;
+  font-weight: bold;
   padding-right: 20px;
   padding-bottom: 10px;
 }
@@ -82,13 +96,13 @@ li {
   display: grid;
   bottom: 0;
   left: 0;
-  background-color: saddlebrown;
-  color: seashell;
+  background-color: var(--header-bg);
+  color: var(--text-color);
   justify-content: left;
   padding: 10px;
   text-align: center;
   text-decoration: bold;
-  border: groove 8px brown;
+  border: groove 8px var(--border-color);
   
 }
 

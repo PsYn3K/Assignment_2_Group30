@@ -36,9 +36,37 @@ app.use(session({
   saveUninitialized: false
 }));
 
+/// Expose theme data to templates
+app.use((req, res, next) => {
+  const fallback = { vibeName: "root", vibeKey: [] };
+  res.locals.activeStyle = req.session.activeStyle || fallback;
+  next();
+});
+
+// Dynamic theme stylesheet (session-driven)
+app.get("/theme.css", (req, res) => {
+  const active = req.session.activeStyle || {};
+  const colors = Array.isArray(active.vibeKey) ? active.vibeKey : [];
+
+  const bg = colors[0] || "sandybrown";
+  const border = colors[1] || "brown";
+  const text = colors[2] || "#222";
+
+  res.set("Cache-Control", "no-store");
+  res.type("text/css").send(`
+:root {
+  --bg-color: ${bg};
+  --border-color: ${border};
+  --text-color: ${text};
+}
+  `);
+});
+
 // Routes
 app.use("/", authRoutes);
 app.use("/", vibeRoutes);
+
+
 
 // Home
 app.get("/", (req, res) => {
