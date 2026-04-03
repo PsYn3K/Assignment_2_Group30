@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
   },
   defaultStyle: {
     type: String,
-    default: "root"
+    default: "default"
   }
 });
 
