@@ -21,6 +21,7 @@ const vibeSchema = new mongoose.Schema({
 
 vibeSchema.statics.vibeDefaults = async function () {
   const defaults = [
+    { vibeName: "Default", vibeKey: [] },
     { vibeName: "Chill", vibeKey: ["blue", "purple", "green"] },
     { vibeName: "Energetic", vibeKey: ["red", "yellow", "orange"] },
     { vibeName: "Productive", vibeKey: ["blue", "green", "yellow"] }
