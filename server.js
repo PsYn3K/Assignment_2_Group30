@@ -36,11 +36,12 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
+// Choose vibes
+app.get("/select-vibes", (req, res) => {
+  res.render("select-vibes");
+});
+
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");
 });
 
-// Choose vibes
-app.get("/select vibes", (req, res) => {
-  res.render("edit-task");
-});
