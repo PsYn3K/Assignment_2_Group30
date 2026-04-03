@@ -2,6 +2,7 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const router = express.Router();
 const User = require("../models/User");
+const Task = require("../models/Task");
 
 router.get("/login", (req, res) => {
   res.render("login", { error: null });
@@ -11,12 +12,17 @@ router.get("/register", (req, res) => {
   res.render("register", { error: null });
 });
 
-router.get("/dashboard", (req, res) => {
+router.get("/dashboard", async (req, res) => {
   if (!req.session.user) {
     return res.redirect("/login");
   }
 
-  res.render("dashboard", { user: req.session.user });
+  const tasks = await Task.find({ userId: req.session.user.id });
+
+  res.render("dashboard", {
+    user: req.session.user,
+    tasks
+  });
 });
 
 router.get("/logout", (req, res) => {
@@ -85,4 +91,67 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.post("/add-task", async (req, res) => {
+  if (!req.session.user) {
+    return res.redirect("/login");
+  }
+
+  const newTask = new Task({
+    title: req.body.title,
+    userId: req.session.user.id
+  });
+
+  await newTask.save();
+
+  res.redirect("/dashboard");
+});
+
+router.post("/delete-task/:id", async (req, res) => {
+  if (!req.session.user) {
+    return res.redirect("/login");
+  }
+
+  await Task.deleteOne({
+    _id: req.params.id,
+    userId: req.session.user.id
+  });
+
+  res.redirect("/dashboard");
+});
+
+
+router.get("/edit-task/:id", async (req, res) => {
+  if (!req.session.user) {
+    return res.redirect("/login");
+  }
+
+  const task = await Task.findOne({
+    _id: req.params.id,
+    userId: req.session.user.id
+  });
+
+  if (!task) {
+    return res.redirect("/dashboard");
+  }
+
+  res.render("edit-task", { task });
+});
+
+router.post("/edit-task/:id", async (req, res) => {
+  if (!req.session.user) {
+    return res.redirect("/login");
+  }
+
+  await Task.updateOne(
+    {
+      _id: req.params.id,
+      userId: req.session.user.id
+    },
+    {
+      title: req.body.title
+    }
+  );
+
+  res.redirect("/dashboard");
+});
 module.exports = router;

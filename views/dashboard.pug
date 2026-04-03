@@ -4,5 +4,19 @@ html
     title Dashboard
   body
     h1 Welcome #{user.username}
-    p You are logged in.
+
     a(href="/logout") Logout
+
+    h2 Add Task
+    form(action="/add-task" method="POST")
+      input(type="text" name="title" placeholder="Enter task")
+      button(type="submit") Add
+
+    h2 Your Tasks
+    ul
+      each task in tasks
+        li
+          | #{task.title}
+          a(href=`/edit-task/${task._id}` style="margin-left:10px;") Edit
+          form(action=`/delete-task/${task._id}` method="POST" style="display:inline; margin-left:10px;")
+          button(type="submit") Delete
