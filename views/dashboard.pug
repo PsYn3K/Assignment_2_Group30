@@ -17,10 +17,11 @@ block content
     button(type="submit") Search
 
   h2 Your Vibes
-  if Vibe.length === 0
+  if vibeList.length === 0
     p No vibes found.
+  else
   ul
-    each vibe in Vibe
+    each vibe in vibeList
       li
         | #{vibe.vibeName}
         a(href=`/edit-vibe/${vibe._id}` style="margin-left:10px;") Edit
