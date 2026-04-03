@@ -19,4 +19,19 @@ const vibeSchema = new mongoose.Schema({
   }
 });
 
+vibeSchema.statics.vibeDefaults = async function () {
+  const defaults = [
+    { vibeName: "Chill", vibeKey: ["blue", "purple", "green"] },
+    { vibeName: "Energetic", vibeKey: ["red", "yellow", "orange"] },
+    { vibeName: "Productive", vibeKey: ["blue", "green", "yellow"] }
+  ];
+
+  for (const vibe of defaults) {
+    await this.findOneAndUpdate(
+      { vibeName: vibe.vibeName, userId: null },
+      { ...vibe, userId: null },
+      { upsert: true }
+    );
+  }
+};
 module.exports = mongoose.model("Vibe", vibeSchema);

@@ -1,4 +1,5 @@
 require("dotenv").config();
+const Vibe = require("./models/Vibe");
 
 const express = require("express");
 const mongoose = require("mongoose");
@@ -12,8 +13,13 @@ const app = express();
 
 // MongoDB connection
 mongoose.connect("mongodb://127.0.0.1:27017/taskmanager")
-  .then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log(err));
+  .then(async () => { console.log("MongoDB Connected");
+    await Vibe.vibeDefaults(); // add default vibes if missing
+    console.log("Default vibes ready");
+  })
+  .catch (err => console.log(err));
+
+
 
 // Middleware
 app.set("view engine", "pug");

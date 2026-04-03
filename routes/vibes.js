@@ -2,9 +2,14 @@ const express = require("express");
 const router = express.Router();
 const Vibe = require("../models/Vibe");
 
-router.get("/select-vibes", (req, res) => {
-    if (!req.session.user.id) return res.redirect("/login");
-    res.render("select-vibes");
+router.get("/select-vibes", async (req, res) => {
+  if (!req.session.user) return res.redirect("/login");
+// Fetch both default and user-specific vibes for vibe Selector page
+  const defaultVibes = await Vibe.find({ userId: null });
+  const userVibes = await Vibe.find({ userId: req.session.user.id });
+  const vibeList = [...defaultVibes, ...userVibes];
+
+  res.render("select-vibes", { vibeList }); 
 });
 
 router.post("/create-vibe", async (req, res) => {
