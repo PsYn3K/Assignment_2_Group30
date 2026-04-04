@@ -19,9 +19,14 @@ router.get("/dashboard", async (req, res) => {
 
   const search = req.query.search || "";
 
+  //Search both default vibes and user-created vibes, with case-insensitive partial matching on vibeName
+  
+
   const vibeList = await Vibe.find({
-    userId: req.session.user.id,
-    vibeName: { $regex: search, $options: "i" }
+    $or: [
+      { userId: null, vibeName: { $regex: search, $options: "i" } },
+      { userId: req.session.user.id, vibeName: { $regex: search, $options: "i" } }
+    ]
   });
 
   res.render("dashboard", {
@@ -94,12 +99,12 @@ router.post("/login", async (req, res) => {
       id: foundUser._id,
       username: foundUser.username,
       email: foundUser.email,
-      defaultStyle: foundUser.defaultStyle || "root"
+      defaultStyle: foundUser.defaultStyle || "default"
     };
 
-    // Set active style from saved vibe's colors, fallback to empty if not found
+    // Set active style from saved vibe's colors, an empty array will use default colors set by server
     req.session.activeStyle = {
-      vibeName: foundUser.defaultStyle || "root",
+      vibeName: foundUser.defaultStyle || "default",
       vibeKey: defaultStyle ? defaultStyle.vibeKey : []
     };
 

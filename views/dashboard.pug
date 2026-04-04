@@ -20,10 +20,10 @@ block content
   if vibeList.length === 0
     p No vibes found.
   else
-  ul
-    each vibe in vibeList
-      li
-        | #{vibe.vibeName}
-        a(href=`/edit-vibe/${vibe._id}` style="margin-left:10px;") Edit
-        form(action=`/delete-vibe/${vibe._id}` method="POST" style="display:inline; margin-left:10px;")
+    ul
+      each vibe in vibeList
+        li
+          | #{vibe.vibeName}
+          a(href=`/edit-vibe/${vibe._id}` style="margin-left:10px;") Edit
+          form(action=`/delete-vibe/${vibe._id}` method="POST" style="display:inline; margin-left:10px;")
           button(type="submit") Delete
