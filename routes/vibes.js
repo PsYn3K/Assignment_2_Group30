@@ -87,7 +87,7 @@ router.post("/save-default-style", async (req, res) => {
     { _id: req.session.user.id },
     {
       defaultStyle: vibe.vibeName,
-      defaultVibeKey: vibe.vibeKey  // add this field to User schema
+      defaultVibeKey: vibe.vibeKey  
     }
   );
 

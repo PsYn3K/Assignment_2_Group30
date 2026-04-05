@@ -5,9 +5,6 @@ const router = express.Router();
 const User = require("../models/User");
 const Vibe = require("../models/Vibe");
 
-// =======================
-// GET ROUTES
-// =======================
 
 // Login page
 router.get("/login", (req, res) => {
@@ -76,10 +73,6 @@ router.get("/edit-vibe/:id", async (req, res) => {
     res.redirect("/dashboard");
   }
 });
-
-// =======================
-// POST ROUTES
-// =======================
 
 // Register
 router.post("/register", async (req, res) => {
