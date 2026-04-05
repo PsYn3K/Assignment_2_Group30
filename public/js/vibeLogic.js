@@ -36,7 +36,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 const payload = {
                     vibeName: name.trim(),
-                    vibeKey: selected
+                    vibeKey: selected,
+                    requestType: "ajax"
                 };
 
                 fetch("/create-vibe", {
@@ -44,9 +45,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(payload)
                 })
-                    .then(r => {
-                        if (!r.ok) throw new Error(`HTTP ${r.status}`);
-                        return r.json();
+                    .then(async r => {
+                        const data = await r.json();
+                        if (!r.ok) throw new Error(data.error || `HTTP ${r.status}`);
+                        return data;
                     })
                     .then(data => {
                         setMessage(`Saved "${data.vibeName}" (${data.vibeKey.join(", ")})`);

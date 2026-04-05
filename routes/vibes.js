@@ -21,41 +21,77 @@ router.get("/select-vibes", async (req, res) => {
 
 router.post("/create-vibe", async (req, res) => {
   try {
-    const { vibeName, vibeKey } = req.body;
-
-    if (!vibeName || !Array.isArray(vibeKey) || vibeKey.length !== 3) {
-      return res.status(400).json({ error: "Need vibeName + exactly 3 colors" });
+    if (!req.session.user) {
+      return res.status(401).json({ error: "Login required" });
     }
 
-    // Remove duplicate colors and trim whitespace, convert to lowercase(monocolor would be annoying)
-    const uniqueVibe = [...new Set(vibeKey.map(c => c.trim().toLowerCase()))];
+    let { vibeName, vibeKey, requestType } = req.body;
+
+    if (!vibeName || !vibeName.trim()) {
+      if (requestType === "ajax") {
+        return res.status(400).json({ error: "Vibe name is required" });
+      }
+      return res.redirect("/select-vibes");
+    }
+
+    let colors = [];
+
+    if (Array.isArray(vibeKey)) {
+      colors = vibeKey.map(c => c.trim().toLowerCase());
+    } else if (typeof vibeKey === "string") {
+      colors = vibeKey
+        .split(",")
+        .map(c => c.trim().toLowerCase())
+        .filter(Boolean);
+    }
+
+    if (colors.length !== 3) {
+      if (requestType === "ajax") {
+        return res.status(400).json({ error: "Need vibeName + exactly 3 colors" });
+      }
+      return res.redirect("/select-vibes");
+    }
+
+    const uniqueVibe = [...new Set(colors)];
     if (uniqueVibe.length !== 3) {
-      return res.status(400).json({ error: "Colors must be unique" });
+      if (requestType === "ajax") {
+        return res.status(400).json({ error: "Colors must be unique" });
+      }
+      return res.redirect("/select-vibes");
     }
 
-    // Check for duplicate vibe
     const exists = await Vibe.findOne({
       userId: req.session.user.id,
       vibeKey: { $all: uniqueVibe, $size: 3 }
     });
+
     if (exists) {
-      return res.status(409).json({ error: "Vibe with same colors already exists" });
+      if (requestType === "ajax") {
+        return res.status(409).json({ error: "Vibe with same colors already exists" });
+      }
+      return res.redirect("/select-vibes");
     }
 
-    // Create new vibe
     const newVibe = await Vibe.create({
       vibeName: vibeName.trim(),
       vibeKey: uniqueVibe,
       userId: req.session.user.id
     });
 
-    res.status(201).json(newVibe);
+    if (requestType === "ajax") {
+      return res.status(201).json(newVibe);
+    }
+
+    return res.redirect("/select-vibes");
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Server error" });
-  }
 
-  res.redirect("/select-vibes");
+    if (req.body.requestType === "ajax") {
+      return res.status(500).json({ error: "Server error" });
+    }
+
+    return res.redirect("/select-vibes");
+  }
 });
 
 // Apply current vibe style to current session
