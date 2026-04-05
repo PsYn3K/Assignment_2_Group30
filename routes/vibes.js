@@ -15,7 +15,7 @@ router.get("/select-vibes", async (req, res) => {
   const vibeList = [...defaultVibes, ...userVibes];
 
   res.render("select-vibes", {
-    vibeList, currentStyle: req.session.activeStyle || "root"
+    vibeList, currentStyle: req.session.activeStyle || "default"
   });
 });
 
@@ -54,6 +54,8 @@ router.post("/create-vibe", async (req, res) => {
     console.error(err);
     res.status(500).json({ error: "Server error" });
   }
+
+  res.redirect("/select-vibes");
 });
 
 // Apply current vibe style to current session
