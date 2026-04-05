@@ -4,6 +4,9 @@ const router = express.Router();
 const User = require("../models/User");
 const Vibe = require("../models/Vibe");
 
+//AUTH ROUTES
+//LOGIN, REGISTER, DASHBOARD(non-vibe), LOGOUT ROUTES
+
 router.get("/login", (req, res) => {
   res.render("login", { error: null });
 });
@@ -19,20 +22,15 @@ router.get("/dashboard", async (req, res) => {
 
   const search = req.query.search || "";
 
-  //Search both default vibes and user-created vibes, with case-insensitive partial matching on vibeName
-  
 
+  //Search both default vibes and user-created vibes
   const vibeList = await Vibe.find({
-    $or: [
-      { userId: null, vibeName: { $regex: search, $options: "i" } },
-      { userId: req.session.user.id, vibeName: { $regex: search, $options: "i" } }
-    ]
+    userId: { $in: [null, req.session.user.id] },
+    vibeName: { $regex: search, $options: "i" }
   });
 
   res.render("dashboard", {
-    user: req.session.user,
-    vibeList,
-    search
+    user: req.session.user, vibeList, search
   });
 });
 
@@ -102,7 +100,7 @@ router.post("/login", async (req, res) => {
       defaultStyle: foundUser.defaultStyle || "default"
     };
 
-    // Set active style from saved vibe's colors, an empty array will use default colors set by server
+    // Set active style from saved vibe's colors, an empty array will default to default colors set by server
     req.session.activeStyle = {
       vibeName: foundUser.defaultStyle || "default",
       vibeKey: defaultStyle ? defaultStyle.vibeKey : []
@@ -115,67 +113,5 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.post("/add-vibe", async (req, res) => {
-  if (!req.session.user) {
-    return res.redirect("/login");
-  }
 
-  const newVibe = new Vibe({
-    vibeName: req.body.vibeName,
-    userId: req.session.user.id
-  });
-
-  await newVibe.save();
-
-  res.redirect("/dashboard");
-});
-
-router.post("/delete-vibe/:id", async (req, res) => {
-  if (!req.session.user) {
-    return res.redirect("/login");
-  }
-
-  await Vibe.deleteOne({
-    _id: req.params.id,
-    userId: req.session.user.id
-  });
-
-  res.redirect("/dashboard");
-});
-
-
-router.get("/edit-vibe/:id", async (req, res) => {
-  if (!req.session.user) {
-    return res.redirect("/login");
-  }
-
-  const vibe = await Vibe.findOne({
-    _id: req.params.id,
-    userId: req.session.user.id
-  });
-
-  if (!vibe) {
-    return res.redirect("/dashboard");
-  }
-
-  res.render("edit-vibe", { vibe });
-});
-
-router.post("/edit-vibe/:id", async (req, res) => {
-  if (!req.session.user) {
-    return res.redirect("/login");
-  }
-
-  await Vibe.updateOne(
-    {
-      _id: req.params.id,
-      userId: req.session.user.id
-    },
-    {
-      vibeName: req.body.vibeName
-    }
-  );
-
-  res.redirect("/dashboard");
-});
 module.exports = router;
