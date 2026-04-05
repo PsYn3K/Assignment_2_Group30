@@ -5,35 +5,38 @@ block content
 
   form#selectVibe(action="/apply-vibe" method="POST")
     label(for="selectVibe") Choose Vibe:
-    select(name="vibeId" id="selectVibe", required)
+    select(name="vibeId" id="selectVibe" required)
       option(value="" disabled selected) -- Select a vibe --
       if vibeList && vibeList.length
         each vibe in vibeList
           option(value=vibe._id)= vibe.vibeName
       else
         option(value="" disabled) No vibes found
+
     button(type="submit") Apply Now
     button(type="submit" formaction="/save-default-style") Save As Default vibe
 
   form#createVibe(action="/create-vibe" method="POST")
+    input(type="hidden" name="requestType" value="form")
 
     h2 Create a New Vibe
     p Manually input vibe name and colors for the vibe selector below. Click create to save it.
 
     label(for="vibeName") Vibe Name:
     input(type="text" name="vibeName" id="vibeName" required)
+
     label(for="vibeKey") Vibe Colors (comma separated):
     input(type="text" name="vibeKey" id="vibeKey" required)
+
     button(type="submit") Create
 
-
-    p Or Pick 3 colors, then name your vibe in the popup. It will auto-save.
+    p Or pick 3 colors, then name your vibe in the popup. It will auto-save.
 
   div#colorButtons
     button.color-btn(type="button" data-color="red" style="background:red;") Red
     button.color-btn(type="button" data-color="blue" style="background:blue;") Blue
     button.color-btn(type="button" data-color="green" style="background:green;") Green
-    button.color-btn(type="button" data-color="yellow" style="background:yellow;") Yellow
+    button.color-btn(type="button" data-color="yellow" style="background:yellow; color:black;") Yellow
     button.color-btn(type="button" data-color="purple" style="background:purple;") Purple
 
   p#message
