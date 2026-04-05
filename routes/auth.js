@@ -18,8 +18,6 @@ router.get("/dashboard", async (req, res) => {
   }
 
   const search = req.query.search || "";
-
-  //Search both default vibes and user-created vibes, with case-insensitive partial matching on vibeName
   
 
   //Search both default vibes and user-created vibes
