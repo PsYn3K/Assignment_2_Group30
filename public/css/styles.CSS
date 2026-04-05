@@ -1,113 +1,181 @@
-/*default styles for the app, using CSS variables for theming
-use these variables in optional styles, hard code things you dont want to change with style*/
+/* ================= ROOT VARIABLES ================= */
 :root {
-  --bg-color: sandybrown;
-  --color: #222;
+  --bg-color: rgb(151, 151, 151);
+  --text-color: #222;
   --accent-color: #007bff;
-  --card-bg: #fff;
-  --border-color: brown;
-  --header-bg: saddlebrown;
+  --accent-hover: #0056b3;
+  --card-bg: #ffffff;
+  --border-color: rgb(14, 14, 14);
+  --header-bg: rgb(19, 27, 139);
   --font: Arial, sans-serif;
 }
 
-
+/* ================= GLOBAL ================= */
 body {
   font-family: var(--font);
-  background-color: var(--bg-color);
-  margin: 30px;
-}
-
-h1,
-h2 {
+  background: linear-gradient(135deg, rgb(96, 234, 244), #60def4);
+  margin: 0;
   color: var(--text-color);
 }
 
-form {
-  margin-bottom: 20px;
-}
-
-input,
-button {
-  padding: 8px;
-  margin-top: 5px;
+/* ================= HEADINGS ================= */
+h1, h2, h3 {
   margin-bottom: 10px;
 }
 
+/* ================= HEADER ================= */
+#mainHeader {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: var(--header-bg);
+  color: white;
+  padding: 10px 20px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  border-bottom: 4px solid var(--border-color);
+}
+
+#mainHeader nav {
+  display: flex;
+  gap: 15px;
+}
+
+#mainHeader a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+#mainHeader a:hover {
+  color: var(--accent-color);
+}
+
+/* ================= MAIN ================= */
+main {
+  margin-top: 100px;
+  margin-bottom: 100px;
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* ================= CARD STYLE ================= */
+form, ul {
+  background: var(--card-bg);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  width: 100%;
+  max-width: 500px;
+}
+
+/* ================= INPUT ================= */
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* ================= BUTTON ================= */
 button {
+  background: linear-gradient(135deg, var(--accent-color), #00c6ff);
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: bold;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
+/* Hover effect */
+button:hover {
+  transform: scale(1.05);
+  background: linear-gradient(135deg, var(--accent-hover), #0099cc);
+}
+
+/* Click effect */
+button:active {
+  transform: scale(0.95);
+}
+
+/* ================= LINKS ================= */
 a {
-  margin-right: 10px;
+  text-decoration: none;
+  color: var(--accent-color);
+  font-weight: bold;
 }
 
+a:hover {
+  text-decoration: underline;
+}
+
+/* ================= LIST ================= */
 ul {
-  padding-left: 20px;
+  list-style: none;
+  padding: 0;
 }
 
 li {
-  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
 }
 
+/* ================= ERROR ================= */
 #formErrors {
   color: red;
   margin-bottom: 10px;
 }
 
-#mainHeader {
-  position: fixed;
-  width:100%;
-  max-height:100px;
-  display: grid;
-  top: 0;
-  left: 0;
-  background-color: var(--header-bg);
-  color: var(--text-color);
-  padding: 10px;
-  text-align: center;
-  text-decoration: bold;
-  border: groove 8px var(--border-color);
-
-}
-
-#mainHeader nav {
-  justify-self: end;
-  align-self: end;
-  font-weight: bold;
-  padding-right: 20px;
-  padding-bottom: 10px;
-}
-
-#mainHeader h1,
-#mainHeader p {
-  margin: 0;
-}
-
-#mainHeader nav {
-  justify-self: end;
-  align-self: center;
-}
-
-
+/* ================= FOOTER ================= */
 #mainFooter {
   position: fixed;
-  width:100%;
-  height:100px;
-  display: grid;
   bottom: 0;
-  left: 0;
+  width: 100%;
   background-color: var(--header-bg);
-  color: var(--text-color);
-  justify-content: left;
+  color: white;
   padding: 10px;
   text-align: center;
-  text-decoration: bold;
-  border: groove 8px var(--border-color);
-  
+  border-top: 4px solid var(--border-color);
 }
 
-main {
-  justify-content: center;
-  margin-top: 120px;
-  margin-bottom: 120px;
+/* ================= RESPONSIVE (MOBILE) ================= */
+@media (max-width: 768px) {
+
+  #mainHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  #mainHeader nav {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  main {
+    padding: 10px;
+  }
+
+  form, ul {
+    max-width: 100%;
+  }
+
+  li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
 }
