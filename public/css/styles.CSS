@@ -11,7 +11,7 @@
 
 body {
   font-family: var(--font);
-  background: linear-gradient(135deg, rgb(96, 234, 244), #60def4);
+  background: linear-gradient(135deg, var(--bg-color), var(--border-color));
   margin: 0;
   color: var(--text-color);
 }
