@@ -58,6 +58,8 @@ app.get("/theme.css", (req, res) => {
   --bg-color: ${bg};
   --border-color: ${border};
   --text-color: ${text};
+  --header-bg: ${bg};
+  
 }
   `);
 });
