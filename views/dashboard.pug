@@ -1,7 +1,10 @@
-extends layout
+extends layout  
 
-block content
+block content 
+
   h1 Welcome #{user.username}
+
+  a(href="/logout") Logout
 
   h2 Add Vibe
   form(action="/add-vibe" method="POST")
@@ -12,10 +15,8 @@ block content
   form(action="/dashboard" method="GET")
     input(type="text" name="search" placeholder="Search vibes" value=search)
     button(type="submit") Search
-    a(href="/dashboard" style="margin-left:10px;") Clear
 
   h2 Your Vibes
-
   if vibeList.length === 0
     p No vibes found.
   else
@@ -24,6 +25,5 @@ block content
         li
           | #{vibe.vibeName}
           a(href=`/edit-vibe/${vibe._id}` style="margin-left:10px;") Edit
-
           form(action=`/delete-vibe/${vibe._id}` method="POST" style="display:inline; margin-left:10px;")
-            button(type="submit") Delete
+          button(type="submit") Delete
